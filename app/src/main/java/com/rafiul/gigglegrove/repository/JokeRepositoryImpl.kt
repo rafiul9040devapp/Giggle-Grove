@@ -38,13 +38,6 @@ class JokeRepositoryImpl @Inject constructor(private val api: JokeApi,private va
 
     }
 
-   private fun ResponseJoke.toJokeEntity(): JokeEntity {
-        return JokeEntity(
-            id = this.id,
-            category = this.category,
-            joke = this.joke
-        )
-    }
 
 
 }
