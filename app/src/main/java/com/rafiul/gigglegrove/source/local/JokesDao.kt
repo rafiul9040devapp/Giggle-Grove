@@ -15,4 +15,6 @@ interface JokesDao {
     @Upsert
     suspend fun insertAll(jokeEntity: JokeEntity)
 
+    @Delete
+    suspend fun deleteJoke(jokeEntity: JokeEntity)
 }
