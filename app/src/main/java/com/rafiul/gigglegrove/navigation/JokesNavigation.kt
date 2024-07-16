@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rafiul.gigglegrove.screens.favorite.FavoriteScreen
+import com.rafiul.gigglegrove.screens.favorite.FavoriteViewModel
 import com.rafiul.gigglegrove.screens.home.HomeScreen
 import com.rafiul.gigglegrove.screens.home.HomeViewModel
 
@@ -16,16 +17,17 @@ fun JokesNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = NewsScreens.HomeScreen.name
+        startDestination = JokesScreens.HomeScreen.name
     ) {
 
-        composable(route = NewsScreens.HomeScreen.name) {
+        composable(route = JokesScreens.HomeScreen.name) {
             val homeViewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(navController = navController,viewmodel = homeViewModel)
         }
 
-        composable(route = NewsScreens.FavoriteScreen.name) {
-            FavoriteScreen(navController = navController)
+        composable(route = JokesScreens.FavoriteScreen.name) {
+            val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
+            FavoriteScreen(navController = navController,viewmodel = favoriteViewModel)
         }
 
     }
