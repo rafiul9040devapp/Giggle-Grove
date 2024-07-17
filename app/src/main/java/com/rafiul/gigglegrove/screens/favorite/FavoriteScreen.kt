@@ -34,8 +34,8 @@ import com.rafiul.gigglegrove.components.CustomProgressIndicator
 import com.rafiul.gigglegrove.components.MakeTheJoke
 import com.rafiul.gigglegrove.model.data.JokeEntity
 import com.rafiul.gigglegrove.utils.HandleApiState
+import com.rafiul.gigglegrove.utils.Helper.showSnackBar
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
 const val TAG = "FavoriteScreen"
@@ -124,16 +124,5 @@ fun JokeList(
                 showDialog = false
             }
         )
-    }
-}
-
-
-private fun showSnackBar(
-    coroutineScope: CoroutineScope,
-    snackBarHostState: SnackbarHostState,
-    title: String
-) {
-    coroutineScope.launch {
-        snackBarHostState.showSnackbar(title)
     }
 }

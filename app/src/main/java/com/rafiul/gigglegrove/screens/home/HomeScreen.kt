@@ -36,9 +36,9 @@ import com.rafiul.gigglegrove.components.MakeTheJoke
 import com.rafiul.gigglegrove.model.data.JokeEntity
 import com.rafiul.gigglegrove.navigation.JokesScreens
 import com.rafiul.gigglegrove.utils.HandleApiState
+import com.rafiul.gigglegrove.utils.Helper.showSnackBar
 import com.rafiul.gigglegrove.utils.JokeMapper.mapToEntity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
 const val TAG = "HomeScreen"
@@ -130,13 +130,7 @@ private fun addingJokesToMyFavoriteList(
     }
 }
 
-private fun showSnackBar(
-    coroutineScope: CoroutineScope,
-    snackBarHostState: SnackbarHostState,
-    title:String,
-) = coroutineScope.launch {
-    snackBarHostState.showSnackbar(title)
-}
+
 
 
 
