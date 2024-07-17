@@ -71,7 +71,7 @@ fun ActionButtons(
 }
 
 @Composable
-fun IconButtonWithCircle(
+private fun IconButtonWithCircle(
     onClick: () -> Unit,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     contentDescription: String,

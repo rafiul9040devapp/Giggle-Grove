@@ -72,7 +72,7 @@ fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
                             imageVector = Icons.Default.DeleteForever,
                             contentDescription = "Delete",
                             tint = Color.Red,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(32.dp)
                         )
                     }
                 }
