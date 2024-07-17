@@ -15,7 +15,8 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(private val jokeRepositoryImpl: JokeRepositoryImpl) : ViewModel() {
 
     private val _favoriteJokes: MutableStateFlow<ApiState<List<JokeEntity>>> = MutableStateFlow(ApiState.Empty)
-    val favoriteJokes:StateFlow<ApiState<List<JokeEntity>>> = _favoriteJokes
+    val favoriteJokes:StateFlow<ApiState<List<JokeEntity>>>
+        get() = _favoriteJokes
 
     init {
         getAllFavoriteJokes()

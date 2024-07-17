@@ -17,7 +17,8 @@ class HomeViewModel @Inject constructor(private val repositoryImpl: JokeReposito
     private val categories = listOf("Miscellaneous", "Programming", "Dark", "Pun", "Christmas")
 
     private val _responseJokeState: MutableStateFlow<ApiState<ResponseJoke>> = MutableStateFlow(ApiState.Empty)
-    val responseJokeState: StateFlow<ApiState<ResponseJoke>> = _responseJokeState
+    val responseJokeState: StateFlow<ApiState<ResponseJoke>>
+        get() = _responseJokeState
 
     init {
         getRandomJokes()

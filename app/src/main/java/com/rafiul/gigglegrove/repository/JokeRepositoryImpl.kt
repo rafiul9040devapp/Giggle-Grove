@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.retry
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -37,6 +38,8 @@ class JokeRepositoryImpl @Inject constructor(
                     emit(ApiState.Error(e.toString()))
                 }
             }
+        }.retry(3) { e ->
+            e is UnknownHostException
         }.flowOn(Dispatchers.IO)
 
     override suspend fun getAllFavoriteJokesFromLocal(): Flow<ApiState<List<JokeEntity>>> =
@@ -51,11 +54,11 @@ class JokeRepositoryImpl @Inject constructor(
                 }.collect { jokeEntityList ->
                     emit(ApiState.Success(jokeEntityList))
                 }
-
             } catch (e: Exception) {
                 emit(ApiState.Error(e.toString()))
             }
         }.flowOn(Dispatchers.IO)
+
 
     override suspend fun insertJokesToFavoriteList(jokeEntity: JokeEntity) =
         jokesDao.insertAll(jokeEntity)
