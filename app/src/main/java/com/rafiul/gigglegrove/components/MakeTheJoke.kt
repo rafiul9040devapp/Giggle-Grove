@@ -95,11 +95,11 @@ fun getCategoryColors(category: String): Pair<Color, Color> {
     }
 }
 
-fun getTextAlign(joke: String?): TextAlign {
+private fun getTextAlign(joke: String?): TextAlign {
     return if (joke == null) TextAlign.Center else TextAlign.Start
 }
 
-fun getCategoryDisplayText(joke: JokeEntity): String {
+private fun getCategoryDisplayText(joke: JokeEntity): String {
     return if (joke.joke != null) {
         joke.category ?: "N/A"
     } else {

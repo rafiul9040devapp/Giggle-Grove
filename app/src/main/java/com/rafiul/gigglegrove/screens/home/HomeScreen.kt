@@ -7,9 +7,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +44,7 @@ import kotlinx.coroutines.launch
 const val TAG = "HomeScreen"
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
 
@@ -47,6 +55,16 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Jokes App") },
+                actions = {
+                    IconButton(onClick = { loadingRandomJokes(viewmodel) }) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                    }
+                }
+            )
+        },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { innerPadding ->
         Column(
@@ -59,7 +77,9 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
         ) {
             HandleApiState(
                 apiState = jokeState,
-                onLoading = { CustomProgressIndicator(color = Color.Green) },
+                onLoading = {
+                    CustomProgressIndicator(color = Color.Green)
+                },
                 onError = { error -> CustomErrorText(text = error) },
                 onSuccess = { data ->
                     joke = mapToEntity(data)
@@ -106,10 +126,16 @@ private fun addingJokesToMyFavoriteList(
 ) {
     joke?.let {
         viewmodel.addJokesToFavorite(it)
-        coroutineScope.launch {
-            snackBarHostState.showSnackbar("Added to favorites")
-        }
+        showSnackBar(coroutineScope, snackBarHostState, title = "Added to favorites")
     }
+}
+
+private fun showSnackBar(
+    coroutineScope: CoroutineScope,
+    snackBarHostState: SnackbarHostState,
+    title:String,
+) = coroutineScope.launch {
+    snackBarHostState.showSnackbar(title)
 }
 
 
