@@ -60,24 +60,27 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
             HandleApiState(
                 apiState = jokeState,
                 onLoading = { CustomProgressIndicator(color = Color.Green) },
-                onError = { error ->
-                    CustomErrorText(text = error)
-                },
+                onError = { error -> CustomErrorText(text = error) },
                 onSuccess = { data ->
                     joke = mapToEntity(data)
                     joke?.let {
                         MakeTheJoke(it)
                     }
                 },
-                onEmpty = {
-                    CustomErrorText(text = "Just Wait For A While....")
-                }
+                onEmpty = { CustomErrorText(text = "Just Wait For A While....") }
             )
+
             Spacer(modifier = Modifier.height(32.dp))
+
             ActionButtons(
                 onHomeClick = { loadingRandomJokes(viewmodel) },
                 onFavoriteClick = {
-                    addingJokesToMyFavoriteList(joke, viewmodel, coroutineScope, snackBarHostState)
+                    addingJokesToMyFavoriteList(
+                        joke,
+                        viewmodel,
+                        coroutineScope,
+                        snackBarHostState
+                    )
                 },
                 onShareClick = { navigateToFavoriteScreen(navController) }
             )

@@ -43,22 +43,16 @@ fun FavoriteScreen(navController: NavController, viewmodel: FavoriteViewModel) {
             HandleApiState(
                 apiState = favoriteJokeState,
                 onLoading = { CustomProgressIndicator(color = Color.Green) },
-                onError = { error ->
-                    CustomErrorText(text = error)
-                },
-                onSuccess = { data ->
-                   JokeList(jokes = data, viewmodel = viewmodel)
-                },
-                onEmpty = {
-                    CustomErrorText(text = "Just Wait For A While....")
-                }
+                onError = { error -> CustomErrorText(text = error) },
+                onSuccess = { data -> JokeList(jokes = data, viewmodel = viewmodel) },
+                onEmpty = { CustomErrorText(text = "Just Wait For A While....") }
             )
         }
     }
 }
 
 @Composable
-fun JokeList(jokes: List<JokeEntity>,viewmodel: FavoriteViewModel) {
+fun JokeList(jokes: List<JokeEntity>, viewmodel: FavoriteViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

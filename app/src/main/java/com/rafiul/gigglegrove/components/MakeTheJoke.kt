@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rafiul.gigglegrove.model.data.JokeEntity
@@ -50,7 +51,8 @@ fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
                 text = joke.joke ?: "N/A",
                 color = textColor,
                 fontSize = 18.sp,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = getTextAlign(joke.joke)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -59,7 +61,7 @@ fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = joke.category ?: "N/A",
+                    text = getCategoryDisplayText(joke),
                     color = textColor,
                     fontSize = 14.sp,
                     style = MaterialTheme.typography.bodySmall,
@@ -90,5 +92,17 @@ fun getCategoryColors(category: String): Pair<Color, Color> {
         "Pun" -> Pair(Color.Yellow, Color.Black)
         "Christmas" -> Pair(Color.Cyan, Color.Black)
         else -> Pair(Color.White, Color.Black)
+    }
+}
+
+fun getTextAlign(joke: String?): TextAlign {
+    return if (joke == "N/A") TextAlign.Center else TextAlign.Start
+}
+
+fun getCategoryDisplayText(joke: JokeEntity): String {
+    return if (joke.joke != "N/A") {
+        joke.category ?: "N/A"
+    } else {
+        ""
     }
 }
