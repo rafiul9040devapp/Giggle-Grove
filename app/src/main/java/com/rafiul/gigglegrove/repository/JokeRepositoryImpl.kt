@@ -1,5 +1,6 @@
 package com.rafiul.gigglegrove.repository
 
+import android.database.sqlite.SQLiteException
 import com.rafiul.gigglegrove.model.data.JokeEntity
 import com.rafiul.gigglegrove.model.response.ResponseJoke
 import com.rafiul.gigglegrove.source.local.JokesDao
@@ -38,9 +39,7 @@ class JokeRepositoryImpl @Inject constructor(
                     emit(ApiState.Error(e.toString()))
                 }
             }
-        }.retry(3) { e ->
-            e is UnknownHostException
-        }.flowOn(Dispatchers.IO)
+        }.retry(3) { e -> e is UnknownHostException }.flowOn(Dispatchers.IO)
 
     override suspend fun getAllFavoriteJokesFromLocal(): Flow<ApiState<List<JokeEntity>>> =
         flow<ApiState<List<JokeEntity>>> {
@@ -49,11 +48,10 @@ class JokeRepositoryImpl @Inject constructor(
                 emit(ApiState.Loading)
                 val jokeFlow = jokesDao.getAllJokes()
 
-                jokeFlow.catch { e ->
-                    emit(ApiState.Error("Unable To Load Data: {${e.message}}"))
-                }.collect { jokeEntityList ->
-                    emit(ApiState.Success(jokeEntityList))
-                }
+                jokeFlow.catch { e -> emit(ApiState.Error("Unable To Load Data: {${e.message}}")) }
+                    .retry(3) { e -> e is SQLiteException }
+                    .collect { jokeEntityList -> emit(ApiState.Success(jokeEntityList)) }
+
             } catch (e: Exception) {
                 emit(ApiState.Error(e.toString()))
             }
