@@ -96,11 +96,11 @@ fun getCategoryColors(category: String): Pair<Color, Color> {
 }
 
 fun getTextAlign(joke: String?): TextAlign {
-    return if (joke == "N/A") TextAlign.Center else TextAlign.Start
+    return if (joke == null) TextAlign.Center else TextAlign.Start
 }
 
 fun getCategoryDisplayText(joke: JokeEntity): String {
-    return if (joke.joke != "N/A") {
+    return if (joke.joke != null) {
         joke.category ?: "N/A"
     } else {
         ""

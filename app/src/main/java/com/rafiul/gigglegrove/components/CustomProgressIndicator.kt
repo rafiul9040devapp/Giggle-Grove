@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CustomProgressIndicator(
     color: Color = MaterialTheme.colorScheme.primary,
-    size: Dp = 32.dp,
+    size: Dp = 50.dp,
     strokeWidth: Dp = 4.dp
 ) {
     Canvas(
