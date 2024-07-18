@@ -144,8 +144,12 @@ private fun addingJokesToMyFavoriteList(
     snackBarHostState: SnackbarHostState
 ) {
     joke?.let {
-        viewmodel.addJokesToFavorite(it)
-        showSnackBar(coroutineScope, snackBarHostState, title = "Added to favorites")
+       if (joke.joke !=null ){
+           viewmodel.addJokesToFavorite(it)
+           showSnackBar(coroutineScope, snackBarHostState, title = "Added to favorites")
+       }else{
+           showSnackBar(coroutineScope, snackBarHostState, title = "Empty Joke")
+       }
     }
 }
 
