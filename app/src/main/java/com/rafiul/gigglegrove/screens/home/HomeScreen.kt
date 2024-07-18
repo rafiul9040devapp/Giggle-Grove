@@ -1,5 +1,7 @@
 package com.rafiul.gigglegrove.screens.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,11 +43,14 @@ import com.rafiul.gigglegrove.utils.HandleApiState
 import com.rafiul.gigglegrove.utils.Helper.showSnackBar
 import com.rafiul.gigglegrove.utils.JokeMapper.mapToEntity
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.time.delay
+import java.time.Duration
 
 
 const val TAG = "HomeScreen"
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
@@ -54,6 +60,13 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
 
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            loadingRandomJokes(viewmodel)
+            delay(Duration.ofSeconds(15))
+        }
+    }
 
     Scaffold(
         topBar = {
