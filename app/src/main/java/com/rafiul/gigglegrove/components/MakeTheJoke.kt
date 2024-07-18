@@ -3,9 +3,11 @@ package com.rafiul.gigglegrove.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,40 @@ import com.rafiul.gigglegrove.model.data.JokeEntity
 @Composable
 fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
     val (backgroundColor, textColor) = getCategoryColors(joke.category ?: "")
+    if (joke.joke == null){
+        JokeNotAvailable()
+    } else{
+        JokeCard(backgroundColor, textColor, joke, onDeleteClick)
+    }
+}
+
+@Composable
+private fun JokeNotAvailable() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth().fillMaxHeight(.2f)
+            .padding(16.dp)
+            .background(color = Color.Red),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "Not Available",
+            color = Color.White,
+            fontSize = 32.sp,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun JokeCard(
+    backgroundColor: Color,
+    textColor: Color,
+    joke: JokeEntity,
+    onDeleteClick: (() -> Unit)?
+) {
+
     Card(
         shape = RoundedCornerShape(0.dp),
         modifier = Modifier
@@ -81,6 +117,9 @@ fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
             }
         }
     }
+
+
+
 }
 
 @Composable
