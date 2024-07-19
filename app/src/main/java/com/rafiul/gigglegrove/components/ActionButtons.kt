@@ -47,7 +47,7 @@ fun ActionButtons(
                 onClick = onShareClick,
                 icon = Icons.Default.Moving,
                 contentDescription = "Favorite List",
-                backgroundColor = Color(0xFFFFC107), // Yellow
+                backgroundColor = Color(0xFFBEA045), // Yellow
                 iconColor = Color.White
             )
         }

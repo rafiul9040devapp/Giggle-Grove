@@ -25,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,9 +36,9 @@ import com.rafiul.gigglegrove.model.data.JokeEntity
 @Composable
 fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
     val (backgroundColor, textColor) = getCategoryColors(joke.category ?: "")
-    if (joke.joke == null){
+    if (joke.joke == null) {
         JokeNotAvailable()
-    } else{
+    } else {
         JokeCard(backgroundColor, textColor, joke, onDeleteClick)
     }
 }
@@ -45,7 +47,10 @@ fun MakeTheJoke(joke: JokeEntity, onDeleteClick: (() -> Unit)? = null) {
 private fun JokeNotAvailable() {
     Box(
         modifier = Modifier
-            .fillMaxWidth().fillMaxHeight(.2f)
+            .fillMaxWidth()
+            .clip(shape = RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp))
+            .shadow(elevation = 8.dp)
+            .fillMaxHeight(.2f)
             .padding(16.dp)
             .background(color = Color.Red),
         contentAlignment = Alignment.Center,
@@ -117,7 +122,6 @@ private fun JokeCard(
             }
         }
     }
-
 
 
 }
