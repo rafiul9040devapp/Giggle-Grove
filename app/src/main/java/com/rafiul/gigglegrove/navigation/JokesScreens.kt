@@ -13,5 +13,4 @@ enum class JokesScreens {
             else -> throw IllegalArgumentException("Route $route is not recognised")
         }
     }
-
 }

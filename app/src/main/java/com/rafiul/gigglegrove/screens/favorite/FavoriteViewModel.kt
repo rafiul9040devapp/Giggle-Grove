@@ -3,7 +3,7 @@ package com.rafiul.gigglegrove.screens.favorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rafiul.gigglegrove.model.data.JokeEntity
-import com.rafiul.gigglegrove.repository.JokeRepositoryImpl
+import com.rafiul.gigglegrove.repository.JokeRepository
 import com.rafiul.gigglegrove.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteViewModel @Inject constructor(private val jokeRepositoryImpl: JokeRepositoryImpl) : ViewModel() {
+class FavoriteViewModel @Inject constructor(private val repository: JokeRepository) : ViewModel() {
 
     private val _favoriteJokes: MutableStateFlow<ApiState<List<JokeEntity>>> = MutableStateFlow(ApiState.Empty)
     val favoriteJokes:StateFlow<ApiState<List<JokeEntity>>>
@@ -24,7 +24,7 @@ class FavoriteViewModel @Inject constructor(private val jokeRepositoryImpl: Joke
 
     private fun getAllFavoriteJokes() {
         viewModelScope.launch {
-            jokeRepositoryImpl.getAllFavoriteJokesFromLocal().collect{ state->
+            repository.getAllFavoriteJokesFromLocal().collect{ state->
                 _favoriteJokes.value = state
             }
         }
@@ -32,7 +32,7 @@ class FavoriteViewModel @Inject constructor(private val jokeRepositoryImpl: Joke
 
     fun removeJokesFromFavoriteList(joke: JokeEntity){
         viewModelScope.launch {
-            jokeRepositoryImpl.deleteJokesFromFavoriteList(joke)
+            repository.deleteJokesFromFavoriteList(joke)
         }
     }
 }

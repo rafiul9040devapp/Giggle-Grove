@@ -9,17 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,16 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.rafiul.gigglegrove.components.ActionButtons
-import com.rafiul.gigglegrove.components.CustomErrorText
-import com.rafiul.gigglegrove.components.CustomProgressIndicator
-import com.rafiul.gigglegrove.components.MakeTheJoke
 import com.rafiul.gigglegrove.model.data.JokeEntity
-import com.rafiul.gigglegrove.navigation.JokesScreens
-import com.rafiul.gigglegrove.utils.HandleApiState
-import com.rafiul.gigglegrove.utils.Helper.showSnackBar
-import com.rafiul.gigglegrove.utils.JokeMapper.mapToEntity
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.time.delay
 import java.time.Duration
 
@@ -51,9 +34,8 @@ const val TAG = "HomeScreen"
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
+fun HomeScreen(navController: NavController, viewmodel: HomeViewModel,helper: HomeScreenHelper) {
 
     val jokeState by viewmodel.responseJokeState.collectAsState()
     var joke by remember { mutableStateOf<JokeEntity?>(null) }
@@ -63,26 +45,14 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
 
     LaunchedEffect(Unit) {
         while (true) {
-            loadingRandomJokes(viewmodel)
+            helper.loadingRandomJokes(viewmodel)
             delay(Duration.ofSeconds(15))
         }
     }
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(text = "Giggle Grove") },
-                actions = {
-                    IconButton(onClick = { loadingRandomJokes(viewmodel) }) {
-                        Icon(
-                            Icons.Default.Refresh,
-                            contentDescription = "Refresh",
-                            tint = Color.Cyan,
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                }
-            )
+            helper.AppBarConfiguration(viewmodel)
         },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { innerPadding ->
@@ -94,64 +64,15 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HandleApiState(
-                apiState = jokeState,
-                onLoading = {
-                    CustomProgressIndicator(color = Color.Green)
-                },
-                onError = { error -> CustomErrorText(text = error) },
-                onSuccess = { data ->
-                    joke = mapToEntity(data)
-                    joke?.let {
-                        MakeTheJoke(it)
-                    }
-                },
-                onEmpty = { CustomErrorText(text = "Just Wait For A While....") }
-            )
-
+            joke = helper.handlingTheJokeResponse(jokeState, joke)
             Spacer(modifier = Modifier.height(32.dp))
-
-            ActionButtons(
-                onHomeClick = { loadingRandomJokes(viewmodel) },
-                onFavoriteClick = {
-                    addingJokesToMyFavoriteList(
-                        joke,
-                        viewmodel,
-                        coroutineScope,
-                        snackBarHostState
-                    )
-                },
-                onShareClick = { navigateToFavoriteScreen(navController) }
-            )
+            helper.HandlingTheActions(viewmodel, joke, coroutineScope, snackBarHostState, navController)
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 
-private fun navigateToFavoriteScreen(navController: NavController) {
-    navController.navigate(JokesScreens.FavoriteScreen.name)
-}
-
-
-private fun loadingRandomJokes(viewmodel: HomeViewModel) = viewmodel.getRandomJokes()
-
-
-private fun addingJokesToMyFavoriteList(
-    joke: JokeEntity?,
-    viewmodel: HomeViewModel,
-    coroutineScope: CoroutineScope,
-    snackBarHostState: SnackbarHostState
-) {
-    joke?.let {
-       if (joke.joke !=null ){
-           viewmodel.addJokesToFavorite(it)
-           showSnackBar(coroutineScope, snackBarHostState, title = "Added to favorites")
-       }else{
-           showSnackBar(coroutineScope, snackBarHostState, title = "Empty Joke")
-       }
-    }
-}
 
 
 

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 fun ActionButtons(
     onHomeClick: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onShareClick: () -> Unit,
+    onNavigateClick: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,20 +39,18 @@ fun ActionButtons(
                 onClick = onHomeClick,
                 icon = Icons.Default.Loop,
                 contentDescription = "Load Jokes",
-                backgroundColor = Color(0xFF03A9F4), // Light Blue
-                iconColor = Color.White
+                backgroundColor = Color(0xFF03A9F4),
             )
 
             IconButtonWithCircle(
-                onClick = onShareClick,
+                onClick = onNavigateClick,
                 icon = Icons.Default.Moving,
                 contentDescription = "Favorite List",
-                backgroundColor = Color(0xFFBEA045), // Yellow
-                iconColor = Color.White
+                backgroundColor = Color(0xFFF8A121),
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -63,8 +61,7 @@ fun ActionButtons(
                 onClick = onFavoriteClick,
                 icon = Icons.Default.Favorite,
                 contentDescription = "Add To Favorite",
-                backgroundColor = Color(0xFFE91E63), // Pink
-                iconColor = Color.White
+                backgroundColor = Color(0xFFE91E63),
             )
         }
     }
@@ -76,7 +73,7 @@ private fun IconButtonWithCircle(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     contentDescription: String,
     backgroundColor: Color,
-    iconColor: Color
+    iconColor: Color = Color.White
 ) {
     Box(
         contentAlignment = Alignment.Center,

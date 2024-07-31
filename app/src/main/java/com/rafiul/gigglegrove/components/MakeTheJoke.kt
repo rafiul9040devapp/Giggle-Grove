@@ -13,14 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -51,7 +51,6 @@ private fun JokeNotAvailable() {
             .clip(shape = RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp))
             .shadow(elevation = 8.dp)
             .fillMaxHeight(.2f)
-            .padding(16.dp)
             .background(color = Color.Red),
         contentAlignment = Alignment.Center,
     ) {
@@ -60,7 +59,8 @@ private fun JokeNotAvailable() {
             color = Color.White,
             fontSize = 32.sp,
             style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(32.dp)
         )
     }
 }
@@ -73,18 +73,16 @@ private fun JokeCard(
     onDeleteClick: (() -> Unit)?
 ) {
 
-    Card(
-        shape = RoundedCornerShape(0.dp),
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+            .wrapContentSize()
+            .clip(shape = RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp))
+            .shadow(elevation = 10.dp)
             .background(backgroundColor),
-        elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
         Column(
             modifier = Modifier
-                .background(backgroundColor)
-                .padding(16.dp),
+                .background(backgroundColor),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -93,20 +91,23 @@ private fun JokeCard(
                 color = textColor,
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = getTextAlign(joke.joke)
+                textAlign = getTextAlign(joke.joke),
+                modifier = Modifier.padding(16.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
             ) {
                 Text(
                     text = getCategoryDisplayText(joke),
                     color = textColor,
                     fontSize = 14.sp,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(16.dp)
                 )
                 if (onDeleteClick != null) {
                     Spacer(modifier = Modifier.width(4.dp))
@@ -134,12 +135,12 @@ fun getCategoryColors(category: String): Pair<Color, Color> {
         "Dark" -> Pair(Color.Black, Color.White)
         "Pun" -> Pair(Color.Yellow, Color.Black)
         "Christmas" -> Pair(Color.Cyan, Color.Black)
-        else -> Pair(Color.White, Color.Black)
+        else -> Pair(Color.DarkGray, Color.White)
     }
 }
 
 private fun getTextAlign(joke: String?): TextAlign {
-    return if (joke == null) TextAlign.Center else TextAlign.Start
+    return if (joke == null) TextAlign.Center else TextAlign.Justify
 }
 
 private fun getCategoryDisplayText(joke: JokeEntity): String {

@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomErrorText(
+    modifier: Modifier = Modifier,
     text: String,
     textAlign: TextAlign = TextAlign.Center,
     fontSize: TextUnit = 24.sp,
     textDecoration: TextDecoration = TextDecoration.Underline,
     color: Color = Color.Red,
-    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,

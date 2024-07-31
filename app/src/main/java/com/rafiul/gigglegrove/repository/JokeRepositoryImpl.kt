@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.retry
 import java.net.UnknownHostException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class JokeRepositoryImpl @Inject constructor(
     private val api: JokeApi,
     private val jokesDao: JokesDao
