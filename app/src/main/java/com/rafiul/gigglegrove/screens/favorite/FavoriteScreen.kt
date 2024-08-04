@@ -52,7 +52,8 @@ fun FavoriteScreen(navController: NavController, viewmodel: FavoriteViewModel,he
                         data,
                         viewmodel,
                         coroutineScope,
-                        snackBarHostState
+                        snackBarHostState,
+                        navController
                     )
                 },
             )

@@ -64,7 +64,7 @@ fun HomeScreen(navController: NavController, viewmodel: HomeViewModel,helper: Ho
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            joke = helper.handlingTheJokeResponse(jokeState, joke)
+            joke = helper.handlingTheJokeResponse(jokeState, joke,navController)
             Spacer(modifier = Modifier.height(32.dp))
             helper.HandlingTheActions(viewmodel, joke, coroutineScope, snackBarHostState, navController)
             Spacer(modifier = Modifier.height(16.dp))

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.retry
+import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -41,7 +42,7 @@ class JokeRepositoryImpl @Inject constructor(
                     emit(ApiState.Error(e.toString()))
                 }
             }
-        }.retry(3) { e -> e is UnknownHostException }.flowOn(Dispatchers.IO)
+        }.retry(3) { e -> e is UnknownHostException || e is IOException }.flowOn(Dispatchers.IO)
 
     override suspend fun getAllFavoriteJokesFromLocal(): Flow<ApiState<List<JokeEntity>>> =
         flow<ApiState<List<JokeEntity>>> {

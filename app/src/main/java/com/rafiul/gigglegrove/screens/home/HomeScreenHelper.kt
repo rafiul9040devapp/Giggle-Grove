@@ -1,6 +1,6 @@
 package com.rafiul.gigglegrove.screens.home
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.rafiul.gigglegrove.components.ActionButtons
 import com.rafiul.gigglegrove.components.CustomErrorText
 import com.rafiul.gigglegrove.components.MakeTheJoke
@@ -64,7 +64,8 @@ class HomeScreenHelper {
     @Composable
     fun handlingTheJokeResponse(
         jokeState: ApiState<ResponseJoke>,
-        joke: JokeEntity?
+        joke: JokeEntity?,
+        navController: NavController
     ): JokeEntity? {
         var entity = joke
         HandleApiState(
@@ -75,6 +76,11 @@ class HomeScreenHelper {
                 entity?.let {
                     Surface(
                         modifier = Modifier
+                            .clickable {
+                                if (it.joke != null) {
+                                    navigateToDetailsScreen(navController = navController, joke = it)
+                                }
+                            }
                             .padding(16.dp)
                             .clip(shape = RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp))
                     ) {
@@ -128,6 +134,12 @@ class HomeScreenHelper {
                 showSnackBar(coroutineScope, snackBarHostState, title = "Empty Joke")
             }
         }
+    }
+
+    private fun navigateToDetailsScreen(navController: NavController, joke: JokeEntity) {
+        val jokeJson = Gson().toJson(joke)
+        val encodedJokeJson = java.net.URLEncoder.encode(jokeJson, "UTF-8")
+        navController.navigate("${JokesScreens.DetailsScreen.name}/$encodedJokeJson")
     }
 }
 
