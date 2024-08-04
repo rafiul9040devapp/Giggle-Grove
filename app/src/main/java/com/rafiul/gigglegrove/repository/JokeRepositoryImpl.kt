@@ -61,9 +61,7 @@ class JokeRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
 
 
-    override suspend fun insertJokesToFavoriteList(jokeEntity: JokeEntity) =
-        jokesDao.insertAll(jokeEntity)
+    override suspend fun insertJokesToFavoriteList(jokeEntity: JokeEntity) = jokesDao.insertAll(jokeEntity)
 
-    override suspend fun deleteJokesFromFavoriteList(jokeEntity: JokeEntity) =
-        jokesDao.deleteJoke(jokeEntity)
+    override suspend fun deleteJokesFromFavoriteList(jokeEntity: JokeEntity) = jokesDao.deleteJoke(jokeEntity)
 }

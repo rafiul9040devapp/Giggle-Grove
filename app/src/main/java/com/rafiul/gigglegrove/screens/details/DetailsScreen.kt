@@ -43,7 +43,6 @@ fun DetailsScreen(navController: NavController, helper: DetailsScreenHelper, jok
         topBar = {
             helper.AppBarConfiguration(navController, joking.category ?: "N/A")
         },
-
         ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -53,37 +52,8 @@ fun DetailsScreen(navController: NavController, helper: DetailsScreenHelper, jok
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.fillMaxHeight(.15f))
-            Surface(
-                modifier = Modifier
-                    .padding(32.dp)
-                    .wrapContentSize()
-                    .clip(shape = RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp))
-            ) {
-                Box(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .clip(shape = RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp))
-                        .shadow(elevation = 10.dp)
-                        .background(backgroundColor),
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .background(backgroundColor),
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = joking.joke ?: "N/A",
-                            color = textColor,
-                            fontSize = 18.sp,
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Justify,
-                            modifier = Modifier.padding(32.dp)
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                }
-            }
+            helper.ShowJokeDetails(backgroundColor, joking, textColor)
         }
     }
 }
+
